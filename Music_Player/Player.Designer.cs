@@ -31,7 +31,6 @@ namespace Music_Player
         /// </summary>
         private void InitializeComponent()
         {
-            
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Player));
             this.close_btn = new System.Windows.Forms.Button();
@@ -256,8 +255,7 @@ namespace Music_Player
             this.login_btn.Name = "login_btn";
             this.login_btn.Size = new System.Drawing.Size(313, 53);
             this.login_btn.TabIndex = 10;
-            this.login_btn.Text = "                 Sign  In";
-            this.login_btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.login_btn.Text = "Sign  In";
             this.login_btn.UseVisualStyleBackColor = false;
             this.login_btn.Click += new System.EventHandler(this.login_btn_Click);
             this.login_btn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Menu_bar_MouseClick);
