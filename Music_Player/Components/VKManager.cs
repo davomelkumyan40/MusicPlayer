@@ -86,6 +86,7 @@ namespace Music_Player.Components
                         SaveAs(UserDataFile.Name, JsonConvert.SerializeObject(UserVk));
                         using (JsonTextWriter writer = new JsonTextWriter(new StreamWriter(SecretDataFile.Name, true)))
                         {
+                            //string json = JsonConvert.SerializeObject(Account);
                             writer.WriteStartObject();
                             writer.WritePropertyName("Name");
                             writer.WriteValue(Account.Name);
@@ -117,14 +118,14 @@ namespace Music_Player.Components
         }
 
         //Authentificate from json file and returns VKAccaunt instance
-        public VKAccount AuthentificateFromFile(string jsonString, string jsonString2)
+        public VKAccount AuthentificateFromFile(string UserDataJSON, string SecretUserJSON)
         {
             Account = new VKAccount();
             UserVk = new VkApi(service);
             try
             {
-                Account = JsonConvert.DeserializeObject<VKAccount>(jsonString);
-                var obj = JsonConvert.DeserializeObject<VKAccount>(jsonString2);
+                Account = JsonConvert.DeserializeObject<VKAccount>(UserDataJSON);
+                var obj = JsonConvert.DeserializeObject<VKAccount>(SecretUserJSON);
                 Account.Password = obj.Password;
                 Account.Login = obj.Login;
                 Settings set = Settings.Audio;
@@ -149,13 +150,14 @@ namespace Music_Player.Components
         //downloading and returning like Image the user avatar TUPLE<T1, T2, T3>
         public void GiveAllInfoToAccountObject()
         {
-            request = WebRequest.Create($@"https://api.vk.com/method/users.get?owner_id={UserVk.UserId}&fields=photo_200&access_token={UserVk.Token}{Properties.Resources.VkAPIVersion}") as HttpWebRequest;
+            request = WebRequest.Create($@"https://api.vk.com/method/users.get?owner_id={UserVk.UserId}&fields=photo_200&access_token={UserVk.Token}&v=5.92") as HttpWebRequest;
             HttpWebResponse respons = request.GetResponse() as HttpWebResponse;
             Stream jsonStream = respons.GetResponseStream();
             StreamReader r = new StreamReader(jsonStream);
             string jsonStr = r.ReadToEnd();
             r.Dispose();
-            var obj = JsonConvert.DeserializeObject<RootVKAccount>(jsonStr);
+            RootVKAccount obj = JsonConvert.DeserializeObject<RootVKAccount>(jsonStr);
+            
             obj.response[0].Password = Account.Password;
             obj.response[0].Login = Account.Login;
             obj.response[0].IsAuthorized = true;

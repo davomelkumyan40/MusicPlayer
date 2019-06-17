@@ -8,13 +8,13 @@ namespace Music_Player.Components
     {
         public VKAccount()
         {
-            Token = default;
-            UserId = default;
+            Token = default(string);
+            UserId = default(long);
             IsAuthorized = false;
-            Password = default;
-            Login = default;
-            UserImage = default;
-            UserImgUrl = default;
+            Password = default(string);
+            Login = default(string);
+            UserImage = default(Image);
+            UserImgUrl = default(string);
         }
 
         public VKAccount(string password, string login)

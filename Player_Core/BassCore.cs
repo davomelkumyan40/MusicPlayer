@@ -43,8 +43,12 @@ namespace Player_Core
 
         public static void Stop()
         {
-            Bass.BASS_ChannelStop(Stream);
-            Bass.BASS_StreamFree(Stream);
+            try
+            {
+                Bass.BASS_ChannelStop(Stream);
+                Bass.BASS_StreamFree(Stream);
+            }
+            catch {}
         }
 
         public static void Pause()

@@ -1,4 +1,5 @@
 ﻿using Music_Player.Components.Custom_Controls;
+using System.Drawing;
 
 namespace Music_Player
 {
@@ -30,6 +31,7 @@ namespace Music_Player
         /// </summary>
         private void InitializeComponent()
         {
+            
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Player));
             this.close_btn = new System.Windows.Forms.Button();
@@ -55,6 +57,7 @@ namespace Music_Player
             this.music_Track_Bar = new MB.Controls.ColorSlider();
             this.notify_Icon = new System.Windows.Forms.NotifyIcon(this.components);
             this.general_panel = new System.Windows.Forms.Panel();
+            this.settings_btn = new System.Windows.Forms.Button();
             this.minimize_btn = new System.Windows.Forms.Button();
             this.maximize_btn = new System.Windows.Forms.Button();
             this.music_list_panel = new System.Windows.Forms.Panel();
@@ -253,7 +256,8 @@ namespace Music_Player
             this.login_btn.Name = "login_btn";
             this.login_btn.Size = new System.Drawing.Size(313, 53);
             this.login_btn.TabIndex = 10;
-            this.login_btn.Text = "Sign  In";
+            this.login_btn.Text = "                 Sign  In";
+            this.login_btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.login_btn.UseVisualStyleBackColor = false;
             this.login_btn.Click += new System.EventHandler(this.login_btn_Click);
             this.login_btn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Menu_bar_MouseClick);
@@ -372,7 +376,8 @@ namespace Music_Player
             this.my_music.Name = "my_music";
             this.my_music.Size = new System.Drawing.Size(313, 53);
             this.my_music.TabIndex = 5;
-            this.my_music.Text = " My music";
+            this.my_music.Text = "                 My music";
+            this.my_music.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.my_music.UseVisualStyleBackColor = false;
             this.my_music.Click += new System.EventHandler(this.My_music_Click);
             this.my_music.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Menu_bar_MouseClick);
@@ -481,6 +486,7 @@ namespace Music_Player
             // general_panel
             // 
             this.general_panel.BackColor = System.Drawing.Color.Black;
+            this.general_panel.Controls.Add(this.settings_btn);
             this.general_panel.Controls.Add(this.minimize_btn);
             this.general_panel.Controls.Add(this.maximize_btn);
             this.general_panel.Controls.Add(this.close_btn);
@@ -492,6 +498,24 @@ namespace Music_Player
             this.general_panel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.generalPanel_MouseDown);
             this.general_panel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.generalPanel_MouseMove);
             this.general_panel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.generalPanel_MouseUp);
+            // 
+            // settings_btn
+            // 
+            this.settings_btn.BackColor = System.Drawing.Color.Black;
+            this.settings_btn.Dock = System.Windows.Forms.DockStyle.Right;
+            this.settings_btn.FlatAppearance.BorderSize = 0;
+            this.settings_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.settings_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.settings_btn.ForeColor = System.Drawing.Color.White;
+            this.settings_btn.Image = ((System.Drawing.Image)(resources.GetObject("settings_btn.Image")));
+            this.settings_btn.Location = new System.Drawing.Point(639, 0);
+            this.settings_btn.Name = "settings_btn";
+            this.settings_btn.Size = new System.Drawing.Size(59, 48);
+            this.settings_btn.TabIndex = 2;
+            this.settings_btn.UseVisualStyleBackColor = false;
+            this.settings_btn.Click += new System.EventHandler(this.settings_btn_Click);
+            this.settings_btn.MouseEnter += new System.EventHandler(this.settings_btn_MouseEnter);
+            this.settings_btn.MouseLeave += new System.EventHandler(this.settings_btn_MouseLeave);
             // 
             // minimize_btn
             // 
@@ -519,11 +543,11 @@ namespace Music_Player
             this.maximize_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.maximize_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maximize_btn.ForeColor = System.Drawing.Color.White;
+            this.maximize_btn.Image = global::Music_Player.Properties.Resources.maximize;
             this.maximize_btn.Location = new System.Drawing.Point(757, 0);
             this.maximize_btn.Name = "maximize_btn";
             this.maximize_btn.Size = new System.Drawing.Size(59, 48);
             this.maximize_btn.TabIndex = 0;
-            this.maximize_btn.Text = "O";
             this.maximize_btn.UseVisualStyleBackColor = false;
             this.maximize_btn.Click += new System.EventHandler(this.Maximize_btn_Click_1);
             this.maximize_btn.MouseEnter += new System.EventHandler(this.Maximize_and_minimize_btn_MouseEnter);
@@ -678,7 +702,8 @@ namespace Music_Player
             // 
             // volume_btn
             // 
-            this.volume_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.volume_btn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.volume_btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(0)))), ((int)(((byte)(75)))));
             this.volume_btn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.volume_btn.Enabled = false;
@@ -939,6 +964,7 @@ namespace Music_Player
         private System.Windows.Forms.Button about_btn;
         private System.Windows.Forms.Button playing_btn;
         private System.Windows.Forms.Button songs_btn;
+        private System.Windows.Forms.Button settings_btn;
     }
 }
 

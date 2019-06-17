@@ -37,10 +37,10 @@
             this.password_logo = new System.Windows.Forms.PictureBox();
             this.login_panel = new System.Windows.Forms.Panel();
             this.password_panel = new System.Windows.Forms.Panel();
+            this.password_box = new System.Windows.Forms.TextBox();
             this.remember_me = new System.Windows.Forms.CheckBox();
             this.close_btn = new System.Windows.Forms.Button();
             this.general_panel = new System.Windows.Forms.Panel();
-            this.password_box = new System.Windows.Forms.TextBox();
             this.Login_logo_picture = new Music_Player.Components.Custom_Controls.CirclePicturBox();
             ((System.ComponentModel.ISupportInitialize)(this.vk_logo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.login_logo)).BeginInit();
@@ -153,6 +153,19 @@
             this.password_panel.Size = new System.Drawing.Size(355, 43);
             this.password_panel.TabIndex = 11;
             // 
+            // password_box
+            // 
+            this.password_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.password_box.Font = new System.Drawing.Font("Segoe UI", 15.75F);
+            this.password_box.ForeColor = System.Drawing.Color.Gray;
+            this.password_box.Location = new System.Drawing.Point(21, 6);
+            this.password_box.Name = "password_box";
+            this.password_box.PasswordChar = '*';
+            this.password_box.Size = new System.Drawing.Size(334, 28);
+            this.password_box.TabIndex = 14;
+            this.password_box.Text = "***************";
+            this.password_box.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Login_form_MouseClick);
+            // 
             // remember_me
             // 
             this.remember_me.AutoSize = true;
@@ -195,19 +208,6 @@
             this.general_panel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.General_panel_MouseMove);
             this.general_panel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.General_panel_MouseUp);
             // 
-            // password_box
-            // 
-            this.password_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.password_box.Font = new System.Drawing.Font("Segoe UI", 15.75F);
-            this.password_box.ForeColor = System.Drawing.Color.Gray;
-            this.password_box.Location = new System.Drawing.Point(21, 6);
-            this.password_box.Name = "password_box";
-            this.password_box.PasswordChar = '*';
-            this.password_box.Size = new System.Drawing.Size(334, 28);
-            this.password_box.TabIndex = 14;
-            this.password_box.Text = "***************";
-            this.password_box.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Login_form_MouseClick);
-            // 
             // Login_logo_picture
             // 
             this.Login_logo_picture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(107)))), ((int)(((byte)(236)))));
@@ -225,6 +225,7 @@
             // Sign_in_form
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(720, 600);
             this.Controls.Add(this.Login_logo_picture);

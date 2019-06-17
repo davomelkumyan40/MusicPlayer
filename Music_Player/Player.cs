@@ -16,9 +16,26 @@ namespace Music_Player
     {
         public Player()
         {
+            bool rememberMe = false;
             InitializeComponent();
-            SetRoundedShape(this, 40);
+            //SetRoundedShape(this, 40);
             account = new VKAccount();
+            InitFolders();
+
+            if (rememberMe)
+            {
+                try
+                {
+                    Client = new VKManager();
+                    Client.AuthentificateFromFile(File.ReadAllText(Properties.Resources.UserDataJSONPath), Properties.Resources.SecretUserJSONDataPath);
+                }
+                catch (Exception ex)
+                {
+                    MusicMessageBox box = new MusicMessageBox();
+                    box.ShowWindow(this, ex.Message);
+                }
+            }
+
         }
 
         public Player(VKAccount account)
@@ -29,19 +46,36 @@ namespace Music_Player
             RefreshLoginPanel();
         }
 
-        //Rounded Controls
-        private static void SetRoundedShape(Control control, int radius)
+        private void InitFolders()
         {
-            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
-            path.AddLine(radius, 0, control.Width - radius, 0);
-            path.AddArc(control.Width - radius, 0, radius, radius, 270, 90);
-            path.AddLine(control.Width, radius, control.Width, control.Height - radius);
-            path.AddArc(control.Width - radius, control.Height - radius, radius, radius, 0, 90);
-            path.AddLine(control.Width - radius, control.Height, radius, control.Height);
-            path.AddArc(0, control.Height - radius, radius, radius, 90, 90);
-            path.AddLine(0, control.Height - radius, 0, radius);
-            path.AddArc(0, 0, radius, radius, 180, 90);
-            control.Region = new System.Drawing.Region(path);
+            if (!Directory.Exists(Properties.Resources.PublicMusicFolder))
+                Directory.CreateDirectory(Properties.Resources.PublicMusicFolder);
+            if (!File.Exists(Properties.Resources.SettingsXML))
+                using (File.Create(Properties.Resources.SettingsXML)) { }
+            if (!File.Exists(Properties.Resources.SecretUserJSONDataPath))
+                using (File.Create(Properties.Resources.SecretUserJSONDataPath)) { }
+            if (!File.Exists(Properties.Resources.UserAccauntDataPath))
+                using (File.Create(Properties.Resources.UserAccauntDataPath)) { }
+            if (!File.Exists(Properties.Resources.UserDataJSONPath))
+                using (File.Create(Properties.Resources.UserDataJSONPath)) { }
+        }
+
+        //Rounded Controls
+        private void SetRoundedShape(Control control, int radius)
+        {
+            if(this.WindowState != FormWindowState.Maximized)
+            {
+                System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+                path.AddLine(radius, 0, control.Width - radius, 0);
+                path.AddArc(control.Width - radius, 0, radius, radius, 270, 90);
+                path.AddLine(control.Width, radius, control.Width, control.Height - radius);
+                path.AddArc(control.Width - radius, control.Height - radius, radius, radius, 0, 90);
+                path.AddLine(control.Width - radius, control.Height, radius, control.Height);
+                path.AddArc(0, control.Height - radius, radius, radius, 90, 90);
+                path.AddLine(0, control.Height - radius, 0, radius);
+                path.AddArc(0, 0, radius, radius, 180, 90);
+                control.Region = new Region(path);
+            }
         }
 
         #region Desighn
@@ -334,26 +368,24 @@ namespace Music_Player
 
         private VKAccount account { get; set; }
         public VKManager Client { get; set; }
-        private string jsonString = string.Empty;
-        private string jsonString2 = string.Empty;
+        private string UserDataJSON = string.Empty;
+        private string SecretUserJSON = string.Empty;
         private async void login_btn_Click(object sender, EventArgs e)
         {
             music_list.Hide();
-            BassCore.Stop();
-            play_btn.Image = Properties.Resources.play_gray;
-            PlayerDefaultSet(true);
             if (!account.IsAuthorized)
             {
-                var UserDataFile = new FileInfo(Properties.Resources.UserDataJSONPath);
-                var SecretDataFile = new FileInfo(Properties.Resources.SecretUserJSONDataPath);
-                using (var stream = new FileStream(UserDataFile.Name, FileMode.Open))
+                BassCore.Stop();
+                PlayerDefaultSet(true);
+                play_btn.Image = Properties.Resources.play_gray;
+                using (var stream = new FileStream(Properties.Resources.UserDataJSONPath, FileMode.Open))
                 {
-                    using (var stream2 = new FileStream(SecretDataFile.Name, FileMode.Open))
+                    using (var stream2 = new FileStream(Properties.Resources.SecretUserJSONDataPath, FileMode.Open))
                     {
                         using (var reader = new StreamReader(stream))
                         {
-                            jsonString = reader.ReadToEnd();
-                            if (string.IsNullOrEmpty(jsonString))
+                            UserDataJSON = reader.ReadToEnd();
+                            if (string.IsNullOrEmpty(UserDataJSON))
                             {
                                 var form = new Sign_in_form(this);
                                 form.Show();
@@ -365,11 +397,11 @@ namespace Music_Player
                                 LoadBar bar = new LoadBar();
                                 this.Hide();
                                 bar.Show();
-                                jsonString2 = new StreamReader(stream2).ReadToEnd();
+                                SecretUserJSON = new StreamReader(stream2).ReadToEnd();
                                 Client = new VKManager();
                                 Task t = new Task(() =>
                                 {
-                                    account = Client.AuthentificateFromFile(jsonString, jsonString2);
+                                    account = Client.AuthentificateFromFile(UserDataJSON, SecretUserJSON);
                                 });
                                 t.Start();
                                 await t;
@@ -391,7 +423,7 @@ namespace Music_Player
 
         private void RefreshLoginPanel()
         {
-            login_btn.Image = default;
+            login_btn.Image = default(Image);
             userPicture.Image = account.UserImage;
             userPicture.Visible = true;
             userPicture.SizeMode = PictureBoxSizeMode.Zoom;
@@ -411,7 +443,7 @@ namespace Music_Player
                 PlayerDefaultSet(true);
             }
 
-                music_list.Hide();
+            music_list.Hide();
             music_list.Controls.Clear();
             login_btn.Location = new Point(12, 0);
             userPicture.Location = new Point(12, 0);
@@ -487,9 +519,15 @@ namespace Music_Player
         private void Maximize_btn_Click_1(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Normal)
+            {
                 WindowState = FormWindowState.Maximized;
+                ((Button)sender).Image = Properties.Resources.normalize;
+            }
             else
+            {
+                ((Button)sender).Image = Properties.Resources.maximize;
                 WindowState = FormWindowState.Normal;
+            }
             Refresh();
         }
 
@@ -1019,7 +1057,7 @@ namespace Music_Player
         {
             light_panel2.Show();
             light_panel2.Location = new Point(((Button)sender).Location.X, light_panel2.Location.Y);
-            for (int i = 0; i < 165; i+=2)
+            for (int i = 0; i < 165; i += 2)
             {
                 light_panel2.Size = new Size(i, 5);
                 ((Button)sender).Refresh();
@@ -1028,11 +1066,34 @@ namespace Music_Player
 
         private void Up_Menu_btn_MouseLeave(object sender, EventArgs e)
         {
-            for (int i = 165; i > 0; i-=2)
+            for (int i = 165; i > 0; i -= 2)
             {
                 light_panel2.Size = new Size(i, 5);
                 ((Button)sender).Refresh();
             }
+        }
+
+        private void settings_btn_MouseEnter(object sender, EventArgs e)
+        {
+            Button b = ((Button)sender);
+            b.Image = Properties.Resources.setting_purp.ToBitmap();
+            b.BackColor = Color.FromArgb(63, 60, 65);
+            b.Refresh();
+        }
+
+        private void settings_btn_MouseLeave(object sender, EventArgs e)
+        {
+            Button b = ((Button)sender);
+            b.Image = Properties.Resources.settings_white.ToBitmap();
+            b.BackColor = Color.Black;
+            b.Refresh();
+        }
+
+        private void settings_btn_Click(object sender, EventArgs e)
+        {
+            SettingForm s = new SettingForm(this);
+            s.Show();
+            this.Hide();
         }
     }
 }
