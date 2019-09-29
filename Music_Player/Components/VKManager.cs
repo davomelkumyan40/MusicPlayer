@@ -158,6 +158,7 @@ namespace Music_Player.Components
             r.Dispose();
             RootVKAccount obj = JsonConvert.DeserializeObject<RootVKAccount>(jsonStr);
             
+            //Может выскочить исключение из за (VK AppID) ключа ВК надо обновлять
             obj.response[0].Password = Account.Password;
             obj.response[0].Login = Account.Login;
             obj.response[0].IsAuthorized = true;

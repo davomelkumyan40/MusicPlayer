@@ -41,7 +41,6 @@ namespace Music_Player
         public Player(VKAccount account)
         {
             InitializeComponent();
-            SetRoundedShape(this, 30);
             this.account = account;
             RefreshLoginPanel();
         }
